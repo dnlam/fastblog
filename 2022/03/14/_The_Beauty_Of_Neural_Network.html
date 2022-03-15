@@ -232,7 +232,7 @@ $$
  {df\over dx}= f(1-f).
 $$</p>
 <p>The overall problem then amounts to finding the values of the "weights" $w_0, w_1,$ and $w_2$ so that the $\tilde{Y}$ we calculate is as close to the target $Y$ as possible.</p>
-<p>To do this, we will seek to minimize a loss function defined as a sum across all data points we have, i.e. all 4 rows. The loss function $L$ we will choose is the mean square error loss, or MSE (note: later in <a href="https://drscotthawley.github.io/blog/2019/02/04/My-First-NN-Part-2.html">Part 2</a> we will use a 'better' loss function for this problem):</p>
+<p>To do this, we will seek to minimize a loss function defined as a sum across all data points we have, i.e. all 4 rows. The loss function $L$ we will choose is the mean square error loss, or MSE, we will use a 'better' loss function for this problem):</p>
 $$
 L = {1\over N}\sum_{i=0}^{N-1} \left[ \tilde{Y}_i - Y_i\right]^2,
 $$<p>or in terms of the activation function
@@ -810,14 +810,6 @@ $$
 Good luck! ;-)<br>
 (Hint 1: This problem features prominently in <a href="https://beamandrew.github.io/deeplearning/2017/02/23/deep_learning_101_part1.html">the history of Neural Networks</a>, involving Marvin Minsky and "AI Winter."<br>
 Hint 2: This whole lesson could instead be entitled "My First Artificial Neuron.")</p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Next time, we will go on to <a href="https://drscotthawley.github.io/blog/2019/02/04/My-First-NN-Part-2.html">Part 2: Bias and CE Loss</a>.</p>
 
 </div>
 </div>
