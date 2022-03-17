@@ -97,7 +97,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      2 min read
+      3 min read
     
 </span></p>
 
@@ -358,7 +358,23 @@ can quickly and easily provide state-of-the-art results in standard deep learnin
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's analyze the parameters inside the <code>ImageDataLoader</code>:</p>
+<ul>
+<li>
+<code>valid_pct</code> is the percentage of validation set compared to training set to avoid <b>over-fitting</b>. By defaults, <code>valid_pct=0.2</code>.
+As being quoted by Jeremy <b><i>"Overfitting is the single most important and challenging issue. It is easy to create a model that does a great job at making predictions on the exact data it has been trained on, but it is much harder to make accurate predictions on data the model has never seen before." </i></b>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Afterwards, we created a <code>Learner</code>, which provides an abstraction combining an optimizer, a model, and the data to train. THis line of code <code>learn = cnn_learner(dls, resnet34, metrics= error_rate)</code> will download an ImageNet-pretrained model, if not already available, remove the classification head of the model, and set appropriate defaults for the optimizer, weight decay, learning rate and so forth.</p>
+<p>Basically, a <code>Learner</code> contains our data (i.e <code>dls</code>), architecture (i.e. <code>resnet34</code>) which is a mathematical function that we are optimizing and a metrics (i.e, <code>error_rate</code>). a <code>Learner</code> will figure out which are the best parameters for the architecture to match the label in the dataset.</p>
+<p>When we are talking about the metrics, which is a function that measures the quality of the model’s predictions using the validation set, it should be noted that the metrics is not necessarily the same as <b>loss</b>. The loss measures how parameters changing influences the results of performances (better or worse).</p>
 
 </div>
 </div>
@@ -367,6 +383,14 @@ can quickly and easily provide state-of-the-art results in standard deep learnin
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>To fits the model, the next line of code <code>learn.fine_tune(1)</code> tells us how to do. Model fitting is simply looking at how many times to look at each image (<code>epochs</code>). Instead of using <code>fit</code>, we use <code>fine_tune</code> method because we started with a pre-trained model and we don' want to throw away all the capabilities that it already has. By performing  <code>fine_tune</code>, the parameters of a pretrained model are updated by training for additional epochs using a different task to that used for pretraining.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In sums, fine_tune is used for transfer learning, in which we used a pretrained model for a task different to what is was originally trained for.</p>
 
 </div>
 </div>
