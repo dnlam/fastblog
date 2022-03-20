@@ -3,7 +3,7 @@
     
         "post0": {
             "title": "Image Classification with FastAI",
-            "content": "",
+            "content": "Objectives . So far, from [Part 1] (https://dnlam.github.io/fastblog/2022/03/19/_intro_fastai.html), we understood how to create and deploy a model. I practice, to make your model really works, there are a lots of details that we have to check including: . different types of layers | regularization methods | optimizers | how to put layers into architectures. | labelling techniques and much more | . In this post, we will lighten them on! .",
             "url": "https://dnlam.github.io/fastblog/2022/03/20/image_classification_fastai.html",
             "relUrl": "/2022/03/20/image_classification_fastai.html",
             "date": " • Mar 20, 2022"
