@@ -150,6 +150,7 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h2"><a href="#Policy-evaluation-(Prediction)">Policy evaluation (Prediction) </a></li>
 <li class="toc-entry toc-h2"><a href="#Policy-improvement">Policy improvement </a></li>
 <li class="toc-entry toc-h2"><a href="#Value-Iteration">Value Iteration </a></li>
+<li class="toc-entry toc-h2"><a href="#Bootstraping-in-Dynamic-Programming">Bootstraping in Dynamic Programming </a></li>
 </ul>
 </li>
 </ul><!--
@@ -635,6 +636,17 @@ $$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is equivalent to policy iteration, with k=1 step of policy evaluation between each two policy improvement steps.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Bootstraping-in-Dynamic-Programming">
+<a class="anchor" href="#Bootstraping-in-Dynamic-Programming" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bootstraping in Dynamic Programming<a class="anchor-link" href="#Bootstraping-in-Dynamic-Programming"> </a>
+</h2>
+<p>Dynamic programming improves the estimates of the value at a state using the estimate of the value function at next states, it is sometimes called learning a guess from a guess and it is a core idea in Reinforcement Learning (bootstraping).</p>
 
 </div>
 </div>
