@@ -97,7 +97,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      8 min read
+      12 min read
     
 </span></p>
 
@@ -157,6 +157,14 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h3"><a href="#Bias/Variance-trade-off">Bias/Variance trade-off </a></li>
 </ul>
 </li>
+<li class="toc-entry toc-h2"><a href="#Batch-mode-of-MC-and-TD">Batch mode of MC and TD </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#Unified-view-of-Reinforcement-Learning">Unified view of Reinforcement Learning </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Multi-step-prediction">Multi-step prediction </a></li>
+<li class="toc-entry toc-h3"><a href="#Mixed-Multi-step-return">Mixed Multi-step return </a></li>
+<li class="toc-entry toc-h3"><a href="#Benefits-of-multi-step-returns">Benefits of multi-step returns </a></li>
 </ul>
 </li>
 </ul><!--
@@ -607,6 +615,220 @@ $$
 <a class="anchor" href="#Bias/Variance-trade-off" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bias/Variance trade-off<a class="anchor-link" href="#Bias/Variance-trade-off"> </a>
 </h3>
 <p>Practically speaking, MC return is an unbiased estimate of the true value but TD target is a biased estimate of the true value. In exchange, TD target has lower variance because the return in MC depends on many random actions, transitions, rewards but Td based merely on one random action, transition and reward.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Batch-mode-of-MC-and-TD">
+<a class="anchor" href="#Batch-mode-of-MC-and-TD" aria-hidden="true"><span class="octicon octicon-link"></span></a>Batch mode of MC and TD<a class="anchor-link" href="#Batch-mode-of-MC-and-TD"> </a>
+</h2>
+<p>We have seen so far that tarbular MC and TD converge $v_t \rightarrow v_\pi$ as experience $\rightarrow \infty$ and $\alpha_t \rightarrow 0$. 
+But let's see what happen when we only have finite experience by considering fixed batch of experience
+$$
+\text{episode 1:} \quad S_1^1, A_1^1, R<em>2^1, ..., S^1</em>{T_1} \
+. \
+. \
+. \
+\text{episode K:} \quad S_1^K, A_1^K, R<em>2^K, ..., S^1</em>{T_K}</p>
+<p>$$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here, instead of having a real model with every transitional probabilities, we only have observed frequencies of transitions (emperical model)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>By using MC learning, it will converge to best mean-squared fit for the observed returns $\sum _{k=1}^K \sum _{t=1} ^{T_k} (G_t^k - v(S_t^k))^2 $ by miniminzing this difference.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On the other hand, TD converges to solution of max likelihood Markov model, given the data samples.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Therefore, TD exploits Markov property by means of helping in fully observable enioronments but MC does not.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Unified-view-of-Reinforcement-Learning">
+<a class="anchor" href="#Unified-view-of-Reinforcement-Learning" aria-hidden="true"><span class="octicon octicon-link"></span></a>Unified view of Reinforcement Learning<a class="anchor-link" href="#Unified-view-of-Reinforcement-Learning"> </a>
+</h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's compare different RL algorithms where Dynamic Programming has been put on the top left corresponding to shallow update where we just look one step and full breadth into the future and we have full access on it (we need a model).</p>
+<p>Besides full breadth, if we can access on the full depth of the model, it would give us exhaustive search.</p>
+<p>If we go all the way down, it exists an algorithm that only look at one trajectory and it is useful when we have only samples or we only deal with the interaction. TD appears on the bottom left and MC is on the bottom right. 
+TD can be thought as having the breadth of one and depth of one so we can just take one step in the world and we can use that to update a value estimate whereas MC makes a very deep update when it rolls until the end of the episode and it use full trajectory to updates its value estimates.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastblog/images/copied_from_nb/ghtop_images/uview-rl.png" alt=""></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Following these principles, TD learning might not be accurate as it uses value estimates and additionally, information can propagate back quite slowly in some cases. MC information propagates faster as ot acknowledge all the state that have been visited before, but it comes with the cost of noisiy updates (high variance).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>to go between MC and TD, we proposed <code>Multi-step update</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Multi-step-prediction">
+<a class="anchor" href="#Multi-step-prediction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Multi-step prediction<a class="anchor-link" href="#Multi-step-prediction"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, instead of looking exactly one step ahead as TD does, we could consider n-step ahead</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="/fastblog/images/copied_from_nb/ghtop_images/nstep-update.png" alt=""></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In general, the n-step return is defined as
+$$
+G_t^{(n)} = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{n-1} R_{t+n} + \gamma ^n v(S_{t+n})
+$$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Then, the multi step TD learning can be transformed into the update as following:
+$$
+v(S_t) \leftarrow v(S_t) + \alpha (G_n^{(n)} - v(S_t))
+$$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Mixed-Multi-step-return">
+<a class="anchor" href="#Mixed-Multi-step-return" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mixed Multi-step return<a class="anchor-link" href="#Mixed-Multi-step-return"> </a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Previously, if we have n-step return, we take one step $R_{t+1}$ and then we add $n-1$ one step return $G_t^{(n} = R_{t+1} +\gamma G_{t+1}^{n-1}  $.</p>
+<p>It means that every step we lose one step until we have only one step left and then one step return will then bootstrap one our state value.</p>
+<p>It means that we fully continue with random samples with trajectory in some steps but on other steps we fully stop and do bootstraping.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It is not necessarily applying the bootstrap at the end of the trajectory but we can do bootstraping a little bit with a parameter $\lambda$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+$$
+G_t^ \lambda = R_{t+1} + \gamma((1-\lambda)v(S_{t+1}) + \lambda G_{t+1}^\lambda)
+$$
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, instead of fully continuing or boostraping , we can do bootstraping a little bit that is controlled by $\lambda$. This is a linear interpolation between our estimated matrix value and the rest of lambda return., Mathematically, it equals to the weighted sum of n-step return .
+$$
+G_t^\lambda = \sum _{n=1} ^\infty (1-\lambda) \lambda ^{n-1} G_t ^{(n)}  \\
+\sum _{n=1} ^\infty (1-\lambda) \lambda ^{n-1} = 1
+$$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If $\lambda=0$ the return will be the same as TD case. If $\lambda=1$, the update will follow MC algorithm.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Benefits-of-multi-step-returns">
+<a class="anchor" href="#Benefits-of-multi-step-returns" aria-hidden="true"><span class="octicon octicon-link"></span></a>Benefits of multi-step returns<a class="anchor-link" href="#Benefits-of-multi-step-returns"> </a>
+</h3>
+<ul>
+<li>Multi-step return have both benefits of TD and MC</li>
+<li>Bootstraping can have issues with bias</li>
+<li>MC can have issues with variance</li>
+<li>Then immediate values of n and $\lambda$ are good.</li>
+</ul>
 
 </div>
 </div>
