@@ -97,7 +97,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      5 min read
+      7 min read
     
 </span></p>
 
@@ -145,7 +145,13 @@ window.onload = wrap_img;
 <ul>
 <li class="toc-entry toc-h2"><a href="#SARSA-Algorithm">SARSA Algorithm </a></li>
 <li class="toc-entry toc-h2"><a href="#Off-policy-TD-and-Q-learning">Off-policy TD and Q-learning </a></li>
-<li class="toc-entry toc-h2"><a href="#On-and-Off-Policy-Learning">On and Off-Policy Learning </a></li>
+<li class="toc-entry toc-h2"><a href="#On-and-Off-Policy-Learning">On and Off-Policy Learning </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Overestimation-in-Q-learning">Overestimation in Q-learning </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Double-Q-Learning">Double-Q Learning </a></li>
+<li class="toc-entry toc-h2"><a href="#Off-Policy-Learning:-Importance-Sampling-Corrections">Off Policy Learning: Importance Sampling Corrections </a></li>
 </ul>
 </li>
 </ul><!--
@@ -377,8 +383,8 @@ $$</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In practice, it is important because of several possible reasons:</p>
 <ul>
-<li>we want to learn from observing database (stored experience) </li>
-<li>reuse experience from old policies (past experience) </li>
+<li>We want to learn from observing database (stored experience) </li>
+<li>Reuse experience from old policies (past experience) </li>
 <li>Learn about multiple policies while following one policy </li>
 <li>Learn about greedy policy while following exploratory policy.</li>
 </ul>
@@ -400,7 +406,15 @@ $$</p>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>It imples that we are learning about the value if we take this action and then in the next step we would be greedy. It is a valid target to update and it would be learning about the greedy policy but we do not need to react all the time according to that policy because it does not explore efficiently..</p>
+<p>It imples that we are learning about the action value if we take this action and then in the next step we would be greedy. It is a valid target to update and it would be learning about the greedy policy but we do not need to react all the time according to that policy because it does not explore efficiently.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this case, the action value function directly approximate $q_*$ independantly from the policy being followed.</p>
 
 </div>
 </div>
@@ -417,6 +431,101 @@ $$</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>IT is proved that it works for any policy that eventually selects all actions sufficiently often (requires appropriately decaying step size $\sum _t \alpha _t = \infty$ and $\sum _t \alpha _t ^2 &lt; \infty$)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Overestimation-in-Q-learning">
+<a class="anchor" href="#Overestimation-in-Q-learning" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overestimation in Q-learning<a class="anchor-link" href="#Overestimation-in-Q-learning"> </a>
+</h3>
+<p>Basically, Q-learning can overestimate the action values. Let's see the bootstrap target that is used in Q-learning.
+$$
+\max _a q_t(S_{t+1},a) = q_t(S_{t+1},\argmax _a q_t(s_{t+1},a))
+$$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The issue of the Q-learning by looking on this equation is that we use the same value function  to both select the action and evaluate the action. However, the action value are approximate. It means that the estimated action value could be wrong and it can comes up with selecting overestimated values rather than underestimated values.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In order to deal with the overestimation in Q-learning, we need to decouple the action values for the selection and evaluation. Therefore, in gives birth to an algorithm which is socalled <code>Double-Q Learning</code>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Double-Q-Learning">
+<a class="anchor" href="#Double-Q-Learning" aria-hidden="true"><span class="octicon octicon-link"></span></a>Double-Q Learning<a class="anchor-link" href="#Double-Q-Learning"> </a>
+</h2>
+<p>Double-Q learning maintain two different state action value functions; $q$ and $q'$.
+$$
+R_{t+1} + \gamma q'_t (S_{t+1}, \argmax _a q_t(S_{t+1},a)) \quad \quad (1) \\
+R_{t+1} + \gamma q_t (S_{t+1}, \argmax _a q'_t(S_{t+1},a)) \quad \quad (2)\\
+$$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The first equation is the standard thing with one step reward and discounted value of the next state. But the value of the next state is defined by picking an action according to our normal action value function $q$ but then evaluating the value of that action with $q'$.</p>
+<p>Then, we can use each of these as targets for these two different action value functions. Every timestep, we will pick one of the action value functions ($q$ for (1) and $q'$ for (2)) to update. We never update both at the same time because it will correlate them. Then we can get unbiased estimate of the greedy action according to one of them.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It has been proved that Double Q-Learning also converges to the optimal policy under the same condition as Q-Learning.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Off-Policy-Learning:-Importance-Sampling-Corrections">
+<a class="anchor" href="#Off-Policy-Learning:-Importance-Sampling-Corrections" aria-hidden="true"><span class="octicon octicon-link"></span></a>Off Policy Learning: Importance Sampling Corrections<a class="anchor-link" href="#Off-Policy-Learning:-Importance-Sampling-Corrections"> </a>
+</h2>
+<p>The goal under  some function f with random input X and a distribution $d'$ , we would like to estimate the expectation of f(X) under a different distribution $d$ (target).</p>
+<p>The solution is to re-weight the function.
+$$
+\mathbb{E} _{x \sim d} [f(x)] = \sum d(x) f(x) \\
+= \sum d'(x) \frac{d(x)}{d'(x)} f(x) \\
+= \mathbb{E} _{x \sim d'} [\frac{d(x)}{d'(x)} f(x)]
+$$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>It means that if we sample the final thing, we would actually get un unbiased estimate of the thing that we were looking for on the left hand side.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>There is an assumption where the distribution $d'(x)$ should be different to 0, otherwise it intuitively states that of we never actually sample x under $d'$, we cant expect to learn from it. The intuition will be scale up events that are rare under $d'$, but common under $d$ because $d'$ will be small and $d$ will be large and vice versa.</p>
 
 </div>
 </div>
