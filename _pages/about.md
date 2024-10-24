@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About Me
-permalink: https://dnlam.github.io
+permalink: /about/
 ---
 Hi there,
 I am Lam DINH (Ngoc-Lam DINH), I graduated from Ha Noi University of Science and Technology  (Vietnam) in 2016 with a degree in Electronics and Telecommunications Engineering. My training mainly focused on several areas: Digital Signal Processing, Wireless Communication and Embedded Programming. Then, I continued my study with a special interest in Signal Theory, Wireless Telecommunications and Optical Networks at Universidad Politecnica de Valencia (Spain) in 2017.   
